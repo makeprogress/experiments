@@ -4,7 +4,7 @@
 
 ## Install
 
-Install with [npm](https://www.npmjs.com/)
+Install with [npm](https://www.npmjs.com/).
 
 ```sh
 $ npm i @boston/experiments
@@ -34,6 +34,155 @@ async function main() {
 
 ### `createExperimentClient`
 Creates a new experiment client.
+
+```js
+const options = {
+  apiKey: 'string', // This comes from the Settings tab of the Dashboard.
+}
+const client = boston.createClient(options)
+```
+
+### `createExperiment`
+Create a new experiment.
+
+```js
+const params = {
+  name: 'string',
+}
+
+const experiment = await client.createExperiment(params)
+
+console.log(experiment)
+
+// {
+//   description: 'string', 
+//   enabled: boolean, 
+//   name: 'string', 
+//   percent: number, 
+//   uuid: 'string',
+// }
+```
+
+### `deleteExperiment`
+Delete an experiment.
+
+```js
+const success = await client.createExperiment(experiment.uuid)
+
+console.log(success) // boolean
+```
+
+### `getAPIKey`
+Returns the provided API Key.
+
+```js
+const key = client.getAPIKey()
+```
+
+### `getAPIUrl`
+Returns the provided API Url.
+
+```js
+const url = client.getAPIUrl()
+```
+
+### `getExperiment`, `getExperimentById`
+Returns an experiment provided an experiment id.
+
+```js
+const experiment = await client.getExperiment(experiment.uuid)
+
+console.log(experiment)
+
+// {
+//   description: 'string', 
+//   enabled: boolean, 
+//   name: 'string', 
+//   percent: number, 
+//   uuid: 'string',
+// }
+```
+
+### `getExperiments`
+Returns a list of all of the user's experiments.
+
+```js
+const experiments = await client.getExperiments()
+
+console.log(experiment)
+
+// [
+//   {
+//     description: 'string', 
+//     enabled: boolean, 
+//     name: 'string', 
+//     percent: number, 
+//     uuid: 'string',
+//   },
+// ]
+```
+
+### `getLocalExperiment`, `getLocalExperimentByUuid`
+Returns an experiment from the localized experiments cache, or the global state.
+
+```js
+const experiment = client.getLocalExperiment(experiment.uuid)
+
+console.log(experiment)
+
+// {
+//   description: 'string', 
+//   enabled: boolean, 
+//   name: 'string', 
+//   percent: number, 
+//   uuid: 'string',
+// }
+```
+
+### `isExperimentActive`
+Used to determine whether an experiment is active for the current user. If this method is used in a response handler, it will not use cookies, or the global state, unless expressly passed.
+
+```js
+const params = {
+  uniqueId: 'string', // optional
+}
+
+const active = await client.isExperimentActive(experiment.uuid, params)
+
+console.log(active) // boolean
+```
+
+### `setAPIKey`
+Sets the API Key used to make requests to the API.
+
+```js
+client.setAPIKey('KEY')
+```
+
+### `updateExperiment`
+Updates an experiment provided an experiment id and an experiment payload.
+
+```js
+const params = {
+  description: 'string',
+  enabled: true, 
+  name: 'string',
+  percent: 100,
+}
+
+const experiment = await client.updateExperiment(experiment.uuid, params)
+
+console.log(experiment)
+
+// {
+//   description: 'string', 
+//   enabled: boolean, 
+//   name: 'string', 
+//   percent: number, 
+//   uuid: 'string',
+// }
+```
+
 
 ## Contributing
 
