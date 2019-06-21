@@ -1,4 +1,4 @@
-# @boston/js
+# @boston/experiments
 
 > Create, update, and delete experiments and determine if they are active for users/audiences.
 
@@ -7,13 +7,13 @@
 Install with [npm](https://www.npmjs.com/)
 
 ```sh
-$ npm i @boston/js
+$ npm i @boston/experiments
 ```
 
 ## Usage
 
 ```js
-const boston = require('@boston/js');
+const boston = require('@boston/experiments');
 const client = boston({
   apiKey: 'KEY',
 })
