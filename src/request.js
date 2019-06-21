@@ -1,0 +1,106 @@
+const {API_URL} = require('./constants/api')
+
+class APIError extends Error {
+  constructor(message = 'The API returned an error that could not be handled.') {
+    super(message)
+  }
+}
+
+module.exports = {
+  APIError,
+  makeAPIRequest,
+  makeRawAPIRequest,
+}
+
+function makeAPIRequest(...args) {
+  return makeRawAPIRequest(...args)
+    .then((response) => response.json())
+    .then(({errors, result}) => {
+      if (errors) {
+        return handleAPIErrors(errors)
+      }
+
+      return result
+    })
+    .catch((e) => handleAPIErrors([e]))
+}
+
+function makeRawAPIRequest(path, options, data) {
+  const url = Object.prototype.toString.call(options) && options.apiUrl ? options.apiUrl : API_URL
+
+  try {
+    return fetch(`${url}${path}`, getAPIOptions(options, data))
+      .then(handleAPIUnauthorized)
+  } catch (e) {
+    return handleAPIErrors([e])
+  }
+}
+
+function getAPIOptions(options = 'GET', data = {}) {
+  const headers = getAPIHeaders(options)
+  const APIOptions = {
+    credentials: 'include',
+    headers,
+    method: 'GET',
+  }
+
+  if (Object.prototype.toString.call(options)) {
+    Object.assign(APIOptions, {
+      headers: Object.assign(headers, options.headers || {}),
+      method: options.method || 'GET',
+    })
+  } else if (typeof options === 'string') {
+    APIOptions.headers = headers
+    APIOptions.method = options
+  }
+
+  if (APIOptions.method.toLowerCase() !== 'get') {
+    if (options.body) {
+      APIOptions.body = JSON.stringify(options.body)
+    } else if (data) {
+      APIOptions.body = JSON.stringify(data)
+    }
+  }
+
+  return APIOptions
+}
+
+function handleAPIErrors(errors) {
+  if (Array.isArray(errors)) {
+    if (errors.length === 1) {
+      throw new Error(errors[0])
+    } else {
+      throw new Error('The error returned more errors than could be handled.')
+    }
+  }
+
+  throw new APIError()
+}
+
+function handleAPIUnauthorized(response) {
+  if (response.status > 399 && response.status < 500) {
+    const e = Object.assign(new Error('Unauthorized'), {response})
+
+    return Promise.reject(e)
+  }
+
+  return response
+}
+
+function getAPIHeaders(options) {
+  const headers = {'Content-Type': 'application/json'}
+
+  if (options.authToken) {
+    headers.Authorization = `Bearer ${options.authToken}`
+  }
+
+  if (options.apiKey) {
+    headers['X-API-Key'] = options.apiKey
+  }
+
+  if (options.experimentState) {
+    headers['X-Experiment-State'] = options.experimentState
+  }
+
+  return headers
+}

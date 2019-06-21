@@ -1,0 +1,42 @@
+{
+  "name": "@boston/js",
+  "version": "1.0.0",
+  "description": "Create, update, and delete experiments and determine if they are active for users/audiences.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/makeprogress/boston-js"
+  },
+  "main": "dist/index.js",
+  "module": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "lint": "eslint .",
+    "postinstall": "rm -rf ./dist && npm run build -- --display=none"
+  },
+  "keywords": [
+    "a|b",
+    "browser",
+    "experiment",
+    "feature",
+    "flag",
+    "flipper",
+    "javascript",
+    "node",
+    "toggle"
+  ],
+  "author": "makeprogress",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "babel-eslint": "^10.0.2",
+    "babel-loader": "^8.0.6",
+    "eslint": "^5.16.0",
+    "eslint-plugin-benderthecrime": "^2.3.0",
+    "webpack": "^4.34.0",
+    "webpack-cli": "^3.3.4"
+  }
+}
