@@ -236,15 +236,11 @@ function setGlobalExperiment(uuid, experiment) {
 
 /* --- Forever Experiment Utilities --- */
 function getForeverExperiment(uuid) {
-  if (sessionStorage !== undefined) {
-    return sessionStorage.getItem(`_bexp_${uuid}`)
-  }
-
-  return null
+  return typeof sessionStorage === 'undefined' ? null : sessionStorage.getItem(`_bexp_${uuid}`)
 }
 
 function setForeverExperiment(uuid, active) {
-  if (sessionStorage !== undefined) {
+  if (typeof sessionStorage !== 'undefined') {
     sessionStorage.setItem(`_bexp_${uuid}`, boolToExperimentState(active))
   }
 }
