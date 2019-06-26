@@ -1,5 +1,7 @@
 const {API_URL} = require('./constants/api')
 
+const fetch = require('./fetch')
+
 class APIError extends Error {
   constructor(message = 'The API returned an error that could not be handled.') {
     super(message)
