@@ -64,8 +64,6 @@ function getAPIOptions(options = 'GET', data = {}) {
 }
 
 function handleAPIErrors(errors) {
-  debugger
-
   if (Array.isArray(errors)) {
     if (errors.length === 0) {
       return Promise.reject(new Error('The error returned more errors than could be handled.'))
