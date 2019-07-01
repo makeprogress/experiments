@@ -64,22 +64,22 @@ function getAPIOptions(options = 'GET', data = {}) {
 }
 
 function handleAPIErrors(errors) {
+  debugger
+
   if (Array.isArray(errors)) {
     if (errors.length === 0) {
-      Promise.reject(new Error('The error returned more errors than could be handled.'))
-    } else {
-      Promise.reject(errors[0])
+      return Promise.reject(new Error('The error returned more errors than could be handled.'))
     }
+
+    return Promise.reject(errors[0])
   }
 
-  throw Promise.reject(new APIError())
+  return Promise.reject(new APIError())
 }
 
 function handleAPIUnauthorized(response) {
   if (response.status > 399 && response.status < 500) {
-    const e = Object.assign(new Error('Unauthorized'), {response})
-
-    return Promise.reject(e)
+    return Promise.reject(new Error('Unauthorized'))
   }
 
   return response
