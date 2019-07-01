@@ -156,7 +156,6 @@ function createExperimentClient(options = {}) {
 
         return active
       })
-      .catch(() => false)
   }
 
   /* ---  API Auth Methods --- */

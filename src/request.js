@@ -24,18 +24,14 @@ function makeAPIRequest(...args) {
 
       return result
     })
-    .catch((e) => handleAPIErrors([e]))
 }
 
 function makeRawAPIRequest(path, options, data) {
   const url = Object.prototype.toString.call(options) && options.apiUrl ? options.apiUrl : API_URL
 
-  try {
-    return fetch(`${url}${path}`, getAPIOptions(options, data))
-      .then(handleAPIUnauthorized)
-  } catch (e) {
-    return handleAPIErrors([e])
-  }
+  return fetch(`${url}${path}`, getAPIOptions(options, data))
+    .then(handleAPIUnauthorized)
+    .catch((e) => handleAPIErrors([e]))
 }
 
 function getAPIOptions(options = 'GET', data = {}) {
@@ -69,14 +65,14 @@ function getAPIOptions(options = 'GET', data = {}) {
 
 function handleAPIErrors(errors) {
   if (Array.isArray(errors)) {
-    if (errors.length === 1) {
-      throw new Error(errors[0])
+    if (errors.length === 0) {
+      Promise.reject(new Error('The error returned more errors than could be handled.'))
     } else {
-      throw new Error('The error returned more errors than could be handled.')
+      Promise.reject(errors[0])
     }
   }
 
-  throw new APIError()
+  throw Promise.reject(new APIError())
 }
 
 function handleAPIUnauthorized(response) {
