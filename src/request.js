@@ -80,6 +80,10 @@ function handleAPIUnauthorized(response) {
     return Promise.reject(new Error('Unauthorized'))
   }
 
+  if (response.status > 399 && response.status < 505) {
+    return Promise.reject(new APIError())
+  }
+
   return response
 }
 
