@@ -76,7 +76,7 @@ function handleAPIErrors(errors) {
 }
 
 function handleAPIUnauthorized(response) {
-  if (response.status > 399 && response.status < 500) {
+  if ([401, 403].includes(response.status)) {
     return Promise.reject(new Error('Unauthorized'))
   }
 
