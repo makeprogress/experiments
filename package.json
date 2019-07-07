@@ -1,10 +1,10 @@
 {
-  "name": "@boston/experiments",
+  "name": "@toggles/experiments",
   "version": "1.0.0",
   "description": "Create, update, and delete experiments and determine if they are active for users/audiences.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/makeprogress/boston-experiments"
+    "url": "https://github.com/makeprogress/experiments"
   },
   "main": "dist/index.js",
   "module": "index.js",

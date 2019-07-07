@@ -8,7 +8,7 @@
     "globals": {
         "Map": true,
         "Promise": true,
-        "bostonExperiments": true
+        "__experiments": true
     },
     "parser": "babel-eslint",
     "parserOptions": {

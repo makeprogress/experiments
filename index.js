@@ -4,7 +4,7 @@ const {makeAPIRequest, makeRawAPIRequest} = require('./src/request')
 const requestCache = new Map()
 
 // NOTE: Intentionally left with an ambiguous global parent.
-bostonExperiments = {}
+__experiments = {}
 
 module.exports = createExperimentClient
 module.exports.createExperimentClient = createExperimentClient
@@ -218,19 +218,19 @@ function createExperimentClient(options = {}) {
 
 /* --- Global Experiment Methods --- */
 function getGlobalExperiment(uuid) {
-  return bostonExperiments[uuid]
+  return __experiments[uuid]
 }
 
 function setGlobalExperiment(uuid, experiment) {
   if (Object.keys(experiment).length) {
-    if (!bostonExperiments[uuid]) {
-      bostonExperiments[uuid] = {}
+    if (!__experiments[uuid]) {
+      __experiments[uuid] = {}
     }
 
-    Object.assign(bostonExperiments[uuid], experiment)
+    Object.assign(__experiments[uuid], experiment)
   }
 
-  return bostonExperiments[uuid]
+  return __experiments[uuid]
 }
 
 /* --- Forever Experiment Utilities --- */
