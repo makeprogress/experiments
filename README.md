@@ -1,4 +1,4 @@
-# @boston/experiments
+# @toggles/experiments
 
 > Create, update, and delete experiments and determine if they are active for users/audiences.
 
@@ -7,26 +7,26 @@
 Install with [npm](https://www.npmjs.com/).
 
 ```sh
-$ npm i @boston/experiments
+$ npm i @toggles/experiments
 ```
 
 ## Usage
 
 ```js
-const boston = require('@boston/experiments');
-const client = boston({
+const toggles = require('@toggles/experiments');
+const client = toggles({
   apiKey: 'KEY',
 })
 
 async function main() {
-  const {uuid} = await boston.createExperiment({name: 'foo'})
+  const {uuid} = await toggles.createExperiment({name: 'foo'})
   
-  await boston.updateExperiment(uuid, {name: 'bar', percent: 100})
+  await toggles.updateExperiment(uuid, {name: 'bar', percent: 100})
 
-  const experiments = await boston.getExperiments()
-  const experiment = await boston.getExperimentById(uuid)
+  const experiments = await toggles.getExperiments()
+  const experiment = await toggles.getExperimentById(uuid)
 
-  const active = await boston.isExperimentActive(uuid, {uniqueId: 'foo@bar.co'})
+  const active = await toggles.isExperimentActive(uuid, {uniqueId: 'foo@bar.co'})
 }
 ```
 
@@ -39,7 +39,7 @@ Creates a new experiment client.
 const options = {
   apiKey: 'string', // This comes from the Settings tab of the Dashboard.
 }
-const client = boston.createClient(options)
+const client = toggles.createClient(options)
 ```
 
 ### `createExperiment`
@@ -186,7 +186,7 @@ console.log(experiment)
 
 ## Contributing
 
-Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/Joe%20Groseclose/js/issues)
+Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/makeprogress/experiments/issues)
 
 ## License
 
