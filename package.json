@@ -9,9 +9,9 @@
   "main": "dist/index.js",
   "module": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "./node_modules/.bin/webpack",
     "lint": "eslint .",
-    "postinstall": "rm -rf ./dist && npm run build -- --display=none"
+    "prepublishOnly": "rm -rf ./dist && npm run build -- --display=none"
   },
   "keywords": [
     "a|b",
