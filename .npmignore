@@ -4,5 +4,6 @@
 .gitignore
 index.js
 package-lock.json
+src
 webpack.config.js
 

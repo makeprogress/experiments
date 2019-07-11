@@ -16,6 +16,8 @@ module.exports = {
   },
   output: {
     filename: 'index.js',
+    library: 'toggles',
+    libraryTarget: 'umd',
     path: path.resolve(__dirname, 'dist'),
   },
 }
