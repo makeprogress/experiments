@@ -1,6 +1,6 @@
 # @toggles/experiments
 
-> Create, update, and delete experiments and determine if they are active for users/audiences.
+Create, update, and delete experiments and determine if they are active for users/audiences.
 
 ## Install
 
