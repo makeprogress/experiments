@@ -16,8 +16,7 @@ module.exports = {
   },
   output: {
     filename: 'index.js',
-    library: 'toggles',
-    libraryTarget: 'umd',
+    libraryTarget: 'commonjs2',
     path: path.resolve(__dirname, 'dist'),
   },
 }
