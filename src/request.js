@@ -37,7 +37,7 @@ function makeRawAPIRequest(path, options, data) {
 function getAPIOptions(options = 'GET', data = {}) {
   const headers = getAPIHeaders(options)
   const APIOptions = {
-    credentials: 'same-origin',
+    credentials: 'include',
     headers,
     method: 'GET',
   }
