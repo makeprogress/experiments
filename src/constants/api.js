@@ -4,7 +4,7 @@ const API_ORIGIN = 'https://api.toggles.app'
 
 const [majorVersion] = version.split('.')
 
-let API_URL = `${API_ORIGIN}/api/v${majorVersion}`
+let API_URL = `${API_ORIGIN}/v${majorVersion}`
 
 module.exports = {
   API_ORIGIN,
