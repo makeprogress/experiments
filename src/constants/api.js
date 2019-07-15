@@ -1,6 +1,6 @@
 const {version} = require('../../package.json')
 
-const API_ORIGIN = 'https://api.toggles.app'
+const API_ORIGIN = 'https://api.toggles.co'
 
 const [majorVersion] = version.split('.')
 
