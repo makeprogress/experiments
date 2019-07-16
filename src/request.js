@@ -37,12 +37,12 @@ function makeRawAPIRequest(path, options, data) {
 function getAPIOptions(options = 'GET', data = {}) {
   const headers = getAPIHeaders(options)
   const APIOptions = {
-    credentials: 'include',
+    credentials: 'same-origin',
     headers,
     method: 'GET',
   }
 
-  if (Object.prototype.toString.call(options)) {
+  if (Object.prototype.toString.call(options) === '[object Object]') {
     Object.assign(APIOptions, {
       headers: Object.assign(headers, options.headers || {}),
       method: options.method || 'GET',

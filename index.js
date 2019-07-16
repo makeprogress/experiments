@@ -160,7 +160,7 @@ function createExperimentClient(options = {}) {
 
   /* ---  API Auth Methods --- */
   function getAPIKey() {
-    return AUTH_TOKEN
+    return API_KEY
   }
 
   function getAPIUrl() {
