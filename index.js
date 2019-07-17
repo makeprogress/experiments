@@ -100,7 +100,7 @@ function createExperimentClient(options = {}) {
   function isExperimentActive(uuid, context) {
     if (requestCache.has(uuid)) {
       return requestCache.get(uuid)
-        .then((response) => response.json())
+        .then((response) => response.clone().json())
         .then(({result: active}) => active)
     }
 
@@ -140,18 +140,17 @@ function createExperimentClient(options = {}) {
       .then((response) => {
         // NOTE: On the response side, we make sure to set our mem, "local storage", and cookie, if we can.
         const {headers} = response
-        const {'x-experiment-state': state} = headers
+        const {'X-Experiment-State': xstate, 'x-experiment-state': state = xstate} = headers
 
         // NOTE: Sets our header, read by the header generator
         setExperimentState(state)
 
-        return response.json()
+        return response.clone().json()
       })
       .then(({result: active}) => {
         // NOTE: Sets our experiment in the global experiment state
         setGlobalExperiment(uuid, {active})
-
-        // NOTE: Sets our experiment in localStorage (response takes care of the cookie).
+        // NOTE: Sets our experiment in sessionStorage (response takes care of the cookie).
         setForeverExperiment(uuid, active)
 
         return active
@@ -234,6 +233,7 @@ function setGlobalExperiment(uuid, experiment) {
 }
 
 /* --- Forever Experiment Utilities --- */
+// TODO: This should diverge for Node.js and browsers: use req.session.
 function getForeverExperiment(uuid) {
   return typeof sessionStorage === 'undefined' ? null : sessionStorage.getItem(`_bexp_${uuid}`)
 }

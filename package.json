@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/makeprogress/experiments"
   },
-  "main": "dist/index.js",
+  "main": "index.js",
   "module": "dist/index.js",
   "scripts": {
     "build": "./node_modules/.bin/webpack",
@@ -27,7 +27,7 @@
   "author": "makeprogress",
   "license": "MIT",
   "dependencies": {
-    "node-fetch": "^2.6.0"
+    "isomorphic-fetch": "^2.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",

@@ -1,6 +1,6 @@
 const {API_URL} = require('./constants/api')
 
-const fetch = require('./fetch')
+const fetch = require('isomorphic-fetch')
 
 class APIError extends Error {
   constructor(message = 'The API returned an error that could not be handled.') {
@@ -27,7 +27,10 @@ function makeAPIRequest(...args) {
 }
 
 function makeRawAPIRequest(path, options, data) {
-  const url = Object.prototype.toString.call(options) && options.apiUrl ? options.apiUrl : API_URL
+  const url = Object.prototype.toString.call(options) === '[object Object]' &&
+    options.apiUrl ? options.apiUrl : API_URL
+
+  console.log(fetch)
 
   return fetch(`${url}${path}`, getAPIOptions(options, data))
     .then(handleAPIUnauthorized)
