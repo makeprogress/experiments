@@ -1,6 +1,6 @@
 {
   "name": "@toggles/experiments",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Create, update, and delete experiments and determine if they are active for users/audiences.",
   "repository": {
     "type": "git",
