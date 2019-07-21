@@ -30,8 +30,6 @@ function makeRawAPIRequest(path, options, data) {
   const url = Object.prototype.toString.call(options) === '[object Object]' &&
     options.apiUrl ? options.apiUrl : API_URL
 
-  console.log(fetch)
-
   return fetch(`${url}${path}`, getAPIOptions(options, data))
     .then(handleAPIUnauthorized)
     .catch((e) => handleAPIErrors([e]))
