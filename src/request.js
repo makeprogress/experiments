@@ -1,6 +1,6 @@
 const {API_URL} = require('./constants/api')
 
-const fetch = require('isomorphic-fetch')
+const axios = require('axios')
 
 class APIError extends Error {
   constructor(message = 'The API returned an error that could not be handled.') {
@@ -16,7 +16,7 @@ module.exports = {
 
 function makeAPIRequest(...args) {
   return makeRawAPIRequest(...args)
-    .then((response) => response.json())
+    .then(({data}) => data)
     .then(({errors, result}) => {
       if (errors) {
         return handleAPIErrors(errors)
@@ -30,38 +30,20 @@ function makeRawAPIRequest(path, options, data) {
   const url = Object.prototype.toString.call(options) === '[object Object]' &&
     options.apiUrl ? options.apiUrl : API_URL
 
-  return fetch(`${url}${path}`, getAPIOptions(options, data))
+  return axios(`${url}${path}`, getAPIOptions(options, data))
     .then(handleAPIUnauthorized)
     .catch((e) => handleAPIErrors([e]))
 }
 
-function getAPIOptions(options = 'GET', data = {}) {
+function getAPIOptions(options, data = {}) {
   const headers = getAPIHeaders(options)
-  const APIOptions = {
-    credentials: 'same-origin',
-    headers,
-    method: 'GET',
-  }
 
-  if (Object.prototype.toString.call(options) === '[object Object]') {
-    Object.assign(APIOptions, {
-      headers: Object.assign(headers, options.headers || {}),
-      method: options.method || 'GET',
-    })
-  } else if (typeof options === 'string') {
-    APIOptions.headers = headers
-    APIOptions.method = options
+  return {
+    data: JSON.stringify(options.body || data),
+    headers: Object.assign(headers, options.headers || {}),
+    method: options.method ? options.method.toLowerCase() : 'get',
+    withCredentials: true,
   }
-
-  if (APIOptions.method.toLowerCase() !== 'get') {
-    if (options.body) {
-      APIOptions.body = JSON.stringify(options.body)
-    } else if (data) {
-      APIOptions.body = JSON.stringify(data)
-    }
-  }
-
-  return APIOptions
 }
 
 function handleAPIErrors(errors) {
