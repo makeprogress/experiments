@@ -6,8 +6,8 @@
     "type": "git",
     "url": "https://github.com/makeprogress/experiments"
   },
-  "main": "dist/index.js",
-  "module": "index.js",
+  "main": "index.js",
+  "module": "dist/index.js",
   "scripts": {
     "build": "./node_modules/.bin/webpack",
     "lint": "eslint .",
