@@ -1,6 +1,7 @@
 const {API_URL: BASE_API_URL} = require('./src/constants/api')
 const {makeAPIRequest, makeRawAPIRequest} = require('./src/request')
 
+const isPOJsO = (obj) => Object.prototype.toString.call(obj) === '[object Object]'
 const requestCache = new Map()
 
 // NOTE: Intentionally left with an ambiguous global parent.
@@ -17,10 +18,12 @@ function createExperimentClient(options = {}) {
   let API_URL = BASE_API_URL
   let AUTH_TOKEN = null
   let EXPERIMENT_STATE = null
+  let RAPID_API_KEY = null
 
-  if (Object.prototype.toString.call(options) === '[object Object]') {
+  if (isPOJsO(options)) {
     API_KEY = options.apiKey
     API_URL = options.apiUrl || BASE_API_URL
+    RAPID_API_KEY = options.rapidApiKey
   } else if (typeof options === 'string') {
     API_KEY = options
   }
@@ -33,6 +36,7 @@ function createExperimentClient(options = {}) {
       authToken: getAuthToken(),
       experimentState: getExperimentState(),
       method: 'GET',
+      rapidApiKey: getRapidAPIKey(),
     })
       .then((experiments) => {
         for (const experiment of experiments) {
@@ -50,6 +54,7 @@ function createExperimentClient(options = {}) {
       authToken: getAuthToken(),
       experimentState: getExperimentState(),
       method: 'GET',
+      rapidApiKey: getRapidAPIKey(),
     })
       .then((experiment) => {
         setGlobalExperiment(experiment.uuid, experiment)
@@ -66,6 +71,7 @@ function createExperimentClient(options = {}) {
       body: {name},
       experimentState: getExperimentState(),
       method: 'POST',
+      rapidApiKey: getRapidAPIKey(),
     })
   }
 
@@ -77,6 +83,7 @@ function createExperimentClient(options = {}) {
       body: {name},
       experimentState: getExperimentState(),
       method: 'DELETE',
+      rapidApiKey: getRapidAPIKey(),
     })
   }
 
@@ -93,6 +100,7 @@ function createExperimentClient(options = {}) {
       },
       experimentState: getExperimentState(),
       method: 'PUT',
+      rapidApiKey: getRapidAPIKey(),
     })
   }
 
@@ -128,11 +136,10 @@ function createExperimentClient(options = {}) {
       apiKey: getAPIKey(),
       apiUrl: API_URL,
       authToken: getAuthToken(),
-      body: Object.prototype.toString.call(context) === '[object Object]' ? context : {
-        uniqueId: context,
-      },
+      body: isPOJsO(context) ? context : {uniqueId: context},
       experimentState: getExperimentState(),
       method: 'GET',
+      rapidApiKey: getRapidAPIKey(),
     })
     requestCache.set(uuid, request)
 
@@ -170,6 +177,10 @@ function createExperimentClient(options = {}) {
     return AUTH_TOKEN
   }
 
+  function getRapidAPIKey() {
+    return RAPID_API_KEY
+  }
+
   function setAPIKey(token = API_KEY) {
     API_KEY = token
   }
@@ -180,6 +191,10 @@ function createExperimentClient(options = {}) {
 
   function setAuthToken(token = AUTH_TOKEN) {
     AUTH_TOKEN = token
+  }
+
+  function setRapidAPIKey(token = RAPID_API_KEY) {
+    RAPID_API_KEY = token
   }
 
   /* --- Experiment State Methods --- */
@@ -211,6 +226,7 @@ function createExperimentClient(options = {}) {
     setAPIKey,
     setAPIUrl,
     setAuthToken,
+    setRapidAPIKey,
     updateExperiment,
   }
 }

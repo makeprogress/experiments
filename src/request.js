@@ -2,6 +2,8 @@ const {API_URL} = require('./constants/api')
 
 const axios = require('axios')
 
+const isPOJsO = (obj) => Object.prototype.toString.call(obj) === '[object Object]'
+
 class APIError extends Error {
   constructor(message = 'The API returned an error that could not be handled.') {
     super(message)
@@ -27,8 +29,7 @@ function makeAPIRequest(...args) {
 }
 
 function makeRawAPIRequest(path, options, data) {
-  const url = Object.prototype.toString.call(options) === '[object Object]' &&
-    options.apiUrl ? options.apiUrl : API_URL
+  const url = isPOJsO(options) && options.apiUrl ? options.apiUrl : API_URL
 
   return axios(`${url}${path}`, getAPIOptions(options, data))
     .then(handleAPIUnauthorized)
@@ -73,12 +74,20 @@ function handleAPIUnauthorized(response) {
 function getAPIHeaders(options) {
   const headers = {'Content-Type': 'application/json'}
 
-  if (options.authToken) {
-    headers.Authorization = `Bearer ${options.authToken}`
+  if (options.apiUrl.indexOf('.rapidapi.com') > -1) {
+    headers['x-rapidapi-host'] = options.apiUrl
   }
 
-  if (options.apiKey) {
-    headers['X-API-Key'] = options.apiKey
+  if (options.rapidAPIKey) {
+    headers['x-rapidapi-key'] = options.rapidAPIKey
+  } else {
+    if (options.authToken) {
+      headers.Authorization = `Bearer ${options.authToken}`
+    }
+
+    if (options.apiKey) {
+      headers['X-API-Key'] = options.apiKey
+    }
   }
 
   if (options.experimentState) {
